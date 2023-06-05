@@ -81,6 +81,7 @@ for i, query_key in enumerate(qry_key):
         reciprocal_rank = calculate_reciprocal_rank(relevant_docs, top_doc_key)
         print(f"Precision: {precision}")
         print(f"Recall: {recall}")
+
         print("avg_precision: " + str(average_precision_query))
         print("reciprocal_rank: " + str(reciprocal_rank))
 
