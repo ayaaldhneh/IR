@@ -12,15 +12,7 @@ filename = r"C:\Users\aya\Desktop\antique\collection.tsv"
 fName = r'C:\Users\aya\Desktop\wikIR1k\documents.csv'
 QFile=r'C:\Users\aya\Desktop\antique\train\queries.TXT'
 
-# def preprocessing_documents(path):
-#     corpus = Datasets.read_documents(path,'\t')
-#     processed_dic = {}
-#     for key, value in corpus.items():
-#         value = date_processor(value)
-#         value = preProcess(value)
-#         print(key,value)
-#         processed_dic[key] = value
-#     return processed_dic
+
 def preprocessing_documents(path):
     corpus = Datasets.read_documents(path,'\t')
     processed_dic = {}
@@ -33,7 +25,7 @@ def preprocessing_documents(path):
         doc_keys.append(key)
         doc_values.append(value)
     return processed_dic, doc_keys,doc_values
-# cleaned_term=preprocessing_documents(filename)
+
 
 def preprocessing_queries(path):
     corpus = Datasets.read_queries(path)
@@ -68,12 +60,7 @@ def create_inverted_index(path1,path2):
     pickle.dump(qry_keys, open("tfidf[qry_key]" + path1[27:34] + ".pickle", "wb"))
     pickle.dump(qry_values, open("tfidf[qry_value]" + path1[27:34] + ".pickle", "wb"))
 
-    # df = pd.DataFrame(documents_matrix.toarray(), columns=vectorizer.get_feature_names_out(), index=corpus.keys())
-    # df = df.div(df.sum(axis=1), axis=0)
-    # pd.set_option('display.max_columns', None)
-    # print('Number of documents:', len(corpus))
-    # print('Number of unique terms:', df.shape[1])
-    # print(df)
+
 
 
 
@@ -130,15 +117,3 @@ def calc_similarity_vectors(query_vector, docs, doc_keys, doc_values):
     # Return the top results as lists
     return [result[1] for result in results], [result[1] for result in results_to_show]
 
-
-
-
-
-# create_inverted_index(cleaned_term)
-#
-# res=calc_similarity('why do fish died with open eyes?',get_docs_matrix("tfidf[docs]antique.pickle"),'[vectorizer]antique.pickle')
-# print(res)
-# docs, doc_keys = preprocessing_documents(filename)
-# matrix = get_docs_matrix("tfidf[docs]antique.pickle")
-# res = calc_similarity('why do fish died with open eyes?', get_docs_matrix("tfidf[docs]antique.pickle"), '[vectorizer]antique.pickle', get_docs_matrix("tfidf[doc_key]antique.pickle"))
-# print(res)
