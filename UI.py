@@ -5,7 +5,11 @@ from main import calc_similarity, get_docs_matrix
 # Define the search function
 def search_query(query, dataset, result_list):
     result_list.delete(0, tk.END)  # Clear the previous search results
-    results,result_to_show = calc_similarity(query, get_docs_matrix("tfidf[docs]"+dataset+".pickle"), '[vectorizer]'+dataset+'.pickle',get_docs_matrix("tfidf[doc_key]"+dataset+".pickle") ,get_docs_matrix("tfidf[doc_value]"+dataset+".pickle"))
+    results,result_to_show = calc_similarity(query
+                                             , get_docs_matrix("tfidf[docs]"+dataset+".pickle")
+                                             , '[vectorizer]'+dataset+'.pickle',
+                                             get_docs_matrix("tfidf[doc_key]"+dataset+".pickle")
+                                             ,get_docs_matrix("tfidf[doc_value]"+dataset+".pickle"))
     for result in result_to_show:
         result_list.insert(tk.END, result)
 

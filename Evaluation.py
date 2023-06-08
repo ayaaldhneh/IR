@@ -1,17 +1,23 @@
 import pickle
+import numpy as np
+from Clustering import do_cluster, do_cluster_query
 from Datasets import golden_standard
-from main import calc_similarity_vectors
+from main import calc_similarity_vectors, calc_similarity
 
-doc_vectors = pickle.load(open("tfidf[docs]antique.pickle", "rb"))
 qry_vectors = pickle.load(open("tfidf[qrs]antique.pickle", "rb"))
+doc_vectors = pickle.load(open("tfidf[docs]antique.pickle", "rb"))
 doc_keys = pickle.load(open("tfidf[doc_key]antique.pickle", "rb"))
 doc_values = pickle.load(open("tfidf[doc_value]antique.pickle", "rb"))
 qrels = golden_standard(r'C:\Users\aya\Desktop\antique\qrels.TXT')
 qry_key = pickle.load(open("tfidf[qry_key]antique.pickle", "rb"))
+qry_values = pickle.load(open("tfidf[qry_value]antique.pickle", "rb"))
+
+
 precision_all = 0.0
 recall_all = 0.0
 mean_avg_precision = 0.0
 mean_reciprocal_rank = 0.0
+clustering=False
 
 
 def calculate_precision(output, matching_output):
@@ -24,9 +30,8 @@ def calculate_recall(matching_output, golden_standard):
 
 
 def calculate_average_precision(relevant_docs, top_doc_key, qid):
-    # Sort documents by decreasing order of similarity
-    sorted_docs = sorted(zip(top_doc_key, doc_values), key=lambda x: x[1], reverse=True)
 
+    sorted_docs = sorted(zip(top_doc_key, doc_values), key=lambda x: x[1], reverse=True)
     # Compute precision and recall values at each ranked position
     precisions, recalls = [], []
     num_relevant_docs_seen = 0
@@ -58,11 +63,39 @@ def calculate_reciprocal_rank(relevant_docs, top_doc_key):
     return 0.0
 
 
+############## if we want to do clustering##############
+#
+# cluster_labels, doc_dicts = do_cluster(doc_vectors, doc_values,doc_keys)
+doc_dicts=[]
+clustering=False
+
+#######################################################
+
+
 # Compare each query vector with all document vectors
 for i, query_key in enumerate(qry_key):
     counter = 0
     query_vector = qry_vectors[i]
-    top_doc_key, top_doc_value = calc_similarity_vectors(query_vector, doc_vectors, doc_keys, doc_values)
+    vectors=[]
+    keys=[]
+    values=[]
+    if(clustering is True):
+        qrycluster = do_cluster_query(query_vector)
+
+        print("***********************")
+        print(qrycluster)
+        print("***********************")
+
+        for doc in doc_dicts:
+            if (doc['cluster'] == qrycluster):
+                vectors.append(doc['vector'])
+                keys.append(doc['key'])
+                values.append(doc['text'])
+
+        top_doc_key, top_doc_value = calc_similarity_vectors(query_vector,vectors,keys,values)
+    else:
+        top_doc_key, top_doc_value = calc_similarity_vectors(query_vector, doc_vectors, doc_keys, doc_values)
+
     print(f"Query {query_key}")
     print(f"Top document: {len(top_doc_key)}")
     print(f"Top document value: {len(top_doc_value)}")
@@ -81,7 +114,6 @@ for i, query_key in enumerate(qry_key):
         reciprocal_rank = calculate_reciprocal_rank(relevant_docs, top_doc_key)
         print(f"Precision: {precision}")
         print(f"Recall: {recall}")
-
         print("avg_precision: " + str(average_precision_query))
         print("reciprocal_rank: " + str(reciprocal_rank))
 
