@@ -5,7 +5,7 @@ from scipy.sparse import vstack
 from sklearn.metrics.pairwise import cosine_similarity
 
 import Datasets
-from PreProcessing import preProcess, date_processor
+from PreProcessing import preProcess
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 
@@ -21,7 +21,7 @@ def preprocessing_documents(path):
     doc_values = []
     for key, value in corpus.items():
 
-        value = date_processor(value)
+        # value = date_processor(value)
 
         value = preProcess(value)
         print(key, value)
@@ -66,7 +66,8 @@ def create_inverted_index(path1,path2):
 
 ############ one time call #############
 # create_inverted_index(filename, QFile)
-create_inverted_index(fName,QFileWik)
+# create_inverted_index(fName,QFileWik)
+
 def get_docs_matrix(path):
     return pickle.load(open(path, "rb"))
 
@@ -95,8 +96,9 @@ def calc_similarity(query, docs, vecpath, doc_keys, doc_values):
 
 
 def calc_similarity_vectors(query_vector, docs, doc_keys, doc_values):
-    docs_matrix = vstack(docs)
-    cosine_similarities = cosine_similarity(query_vector, docs_matrix).flatten()
+
+    # docs_matrix = vstack(docs)
+    cosine_similarities = cosine_similarity(query_vector, docs).flatten()
 
     # Get indices of relevant documents with non-zero similarity scores
     nonzero_indices = [i for i, sim_score in enumerate(cosine_similarities) if sim_score > 0]
