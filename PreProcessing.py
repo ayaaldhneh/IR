@@ -78,22 +78,7 @@ def date_processor(text):
     return text
 
 
-# def execute(text):
-#
-#
-#     for x in text:
-#         z = [jj for jj in sp(x).doc if jj.ent_type_ == "DATE"]
-#         idx = 0
-#         for zz in z:
-#
-#             tmp = list(datefinder.find_dates("default " + zz.text + " default"))
-#
-#             # print(tmp, "   ", zz)
-#             if len(tmp) > 0:
-#                 text[idx] += " " + sp(tmp[0].date().strftime("%Y/%m/%d")).text
-#                 # print(mps[idx])
-#         idx += 1
-#         return text
+
 
 
 
