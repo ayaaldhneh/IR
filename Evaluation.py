@@ -4,13 +4,21 @@ from Clustering import do_cluster, do_cluster_query
 from Datasets import golden_standard
 from main import calc_similarity_vectors, calc_similarity
 
-qry_vectors = pickle.load(open("tfidf[qrs]antique.pickle", "rb"))
-doc_vectors = pickle.load(open("tfidf[docs]antique.pickle", "rb"))
-doc_keys = pickle.load(open("tfidf[doc_key]antique.pickle", "rb"))
-doc_values = pickle.load(open("tfidf[doc_value]antique.pickle", "rb"))
-qrels = golden_standard(r'C:\Users\aya\Desktop\antique\qrels.TXT')
-qry_key = pickle.load(open("tfidf[qry_key]antique.pickle", "rb"))
-qry_values = pickle.load(open("tfidf[qry_value]antique.pickle", "rb"))
+# qry_vectors = pickle.load(open("tfidf[qrs]antique.pickle", "rb"))
+# doc_vectors = pickle.load(open("tfidf[docs]antique.pickle", "rb"))
+# doc_keys = pickle.load(open("tfidf[doc_key]antique.pickle", "rb"))
+# doc_values = pickle.load(open("tfidf[doc_value]antique.pickle", "rb"))
+# qrels = golden_standard(r'C:\Users\aya\Desktop\antique\qrels.TXT')
+# qry_key = pickle.load(open("tfidf[qry_key]antique.pickle", "rb"))
+# qry_values = pickle.load(open("tfidf[qry_value]antique.pickle", "rb"))
+
+qry_vectors = pickle.load(open("tfidf[qrs]wikIR1k.pickle", "rb"))
+doc_vectors = pickle.load(open("tfidf[docs]wikIR1k.pickle", "rb"))
+doc_keys = pickle.load(open("tfidf[doc_key]wikIR1k.pickle", "rb"))
+doc_values = pickle.load(open("tfidf[doc_value]wikIR1k.pickle", "rb"))
+qrels = golden_standard(r'C:\Users\aya\Desktop\wikIR1k\training\qrels.TXT')
+qry_key = pickle.load(open("tfidf[qry_key]wikIR1k.pickle", "rb"))
+qry_value = pickle.load(open("tfidf[qry_value]wikIR1k.pickle", "rb"))
 
 
 precision_all = 0.0
@@ -30,6 +38,10 @@ def calculate_recall(matching_output, golden_standard):
 
 
 def calculate_average_precision(relevant_docs, top_doc_key, qid):
+    # Sort documents by decreasing order of similarity
+    # if(clustering is True):
+    #  sorted_docs = sorted(zip(top_doc_key, doc_values), key=lambda x: x[1]['similarity'], reverse=True)
+    # else:
 
     sorted_docs = sorted(zip(top_doc_key, doc_values), key=lambda x: x[1], reverse=True)
     # Compute precision and recall values at each ranked position
@@ -64,7 +76,7 @@ def calculate_reciprocal_rank(relevant_docs, top_doc_key):
 
 
 ############## if we want to do clustering##############
-#
+
 # cluster_labels, doc_dicts = do_cluster(doc_vectors, doc_values,doc_keys)
 doc_dicts=[]
 clustering=False
