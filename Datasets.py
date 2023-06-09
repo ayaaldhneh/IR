@@ -19,22 +19,7 @@ def read_documents(file_path, delimiter):
     return my_dict
 
 
-# def read_documents(file_path, delimiter):
-#     my_dict = {}
-#     with open(file_path, "r") as csv_file:
-#         reader = csv.reader(csv_file, delimiter=delimiter)
-#         count = 0
-#         for row in reader:
-#             count += 1
-#             if count > 10000:
-#                 break
-#             key = row[0]
-#             value = row[1]
-#             my_dict[key] = value
-#     return my_dict
 
-# print(read_documents(fName,','))
-#print(read_documents(filename,'\t'))
 
 
 def read_queries(path):
